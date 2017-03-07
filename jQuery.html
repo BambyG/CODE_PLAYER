@@ -1,0 +1,81 @@
+
+<!doctype html>
+<html>
+    <head>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link href="jquery-ui/jquery-ui.css" rel="stylesheet">
+    <script src="jquery-ui/jquery-ui.js"></script>
+
+        <title></title>
+     
+    </head>
+
+    <body>
+
+<div id="header">
+    <div id="logo">CodePlayer</div>
+    <div id="buttoncontainer">
+        <div class="active togglebutton" id="html">HTML</div>
+        <div class="togglebutton" id="css">CSS</div>
+
+        <div class="togglebutton" id="javascript">JavaScript</div>
+
+        <div class="active togglebutton" id="output">Output</div>
+    </div>
+</div>
+<div id="bodyContainer">
+    <textarea id="htmlPanel" class="panel"><p>Hello world!</p></textarea>
+    <textarea id="cssPanel" class="panel hidden">p {color:green};</textarea>
+    <textarea id="javascriptPanel" class="panel hidden"></textarea>
+    <iframe id="outputPanel" class="panel"></iframe>
+</div>
+
+	
+    <script type ="text/javascript">
+
+    function updateOutput(){
+ 
+         $("iframe").contents().find("html").html("<html><head><style type='text/css'>"+$("#cssPanel").val()+"</style></head><body>"+$("#htmlPanel").val()+"</body></html>");
+         document.getElementById("outputPanel").contentWindow.eval($("#javascriptPanel").val());
+
+         
+    }
+
+    
+
+
+	$(".togglebutton").hover(function(){
+        $(this).addClass("highlightedbutton");
+    },function(){
+        $(this).removeClass("highlightedbutton");
+    });
+
+
+    $(".togglebutton").click(function(){
+        $(this).toggleClass("active");
+        $(this).removeClass("highlightedbutton");
+        var panelId=$(this).attr("id")+"Panel";
+        $("#"+panelId).toggleClass("hidden");
+        var numberOfActivePanels = 4-$(".hidden").length;
+        $(".panel").width(($(window).width()/numberOfActivePanels)-10);
+    });
+    updateOutput();
+
+    $(".panel").height($(window).height()-$("#header").height()-15);
+    $(".panel").width(($(window).width()/2)-10);
+
+   
+ $("textarea").on("change keyup paste",function(){
+   updateOutput();
+});
+
+    </script>
+
+
+    </body>
+    </html>
+
+
+
